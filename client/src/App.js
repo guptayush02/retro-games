@@ -10,12 +10,23 @@ import Snake from './games/Snake';
 import Tetris from './games/Tetris';
 import Pong from './games/Pong';
 import Mario from './games/Mario';
+import Game2048 from './games/iframes/Game2048';
+import FlappyBird from './games/iframes/FlappyBird';
+import SpaceShooter from './games/iframes/SpaceShooter';
+import Chess from './games/iframes/Chess';
 
 const GAME_COMPONENTS = {
   snake: Snake,
   tetris: Tetris,
-//   pong: Pong,
-  mario: Mario
+  pong: Pong,
+  mario: Mario,
+  game2048: Game2048,
+  // pacman: PacMan,
+  // breakout: Breakout,
+  // spaceinvaders: SpaceInvaders,
+  flappybird: FlappyBird,
+  spaceshooter: SpaceShooter,
+  chess: Chess
 };
 
 function App() {
@@ -25,11 +36,21 @@ function App() {
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
     axios.get(`${baseUrl}/api/games`).then(res => {
-      // Add Mario if not present in backend
+      // Add new games if not present in backend
       let list = res.data;
-      if (!list.find(g => g.id === 'mario')) {
-        list = [...list, { id: 'mario', name: 'Super Mario' }];
-      }
+      const extraGames = [
+        { id: 'mario', name: 'Super Mario' },
+        { id: 'game2048', name: '2048' },
+        // { id: 'pacman', name: 'Pac-Man' },
+        // { id: 'breakout', name: 'Breakout' },
+        // { id: 'spaceinvaders', name: 'Space Invaders' },
+        { id: 'flappybird', name: 'Flappy Bird' },
+        // { id: 'spaceshooter', name: 'Space Shooter' },
+        // { id: 'chess', name: 'Chess' }
+      ];
+      extraGames.forEach(g => {
+        if (!list.find(x => x.id === g.id)) list = [...list, g];
+      });
       setGames(list);
     });
   }, []);
