@@ -1,0 +1,35 @@
+body {
+  background: #181818;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+.game-list button {
+  margin: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background: #222;
+  color: #0ff;
+  border: 2px solid #0ff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.game-list button:hover {
+  background: #0ff;
+  color: #222;
+}
+.game-area {
+  margin-top: 2rem;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
