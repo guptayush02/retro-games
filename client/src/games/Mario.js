@@ -9,7 +9,7 @@ export default function Mario() {
     <div style={{textAlign:'center'}}>
       <h2>Super Mario</h2>
       <iframe
-        src="/mario/main.html"
+        src="/public/mario/main.html"
         title="Super Mario"
         width={640}
         height={480}
