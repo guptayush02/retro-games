@@ -13,6 +13,10 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from public
+
+// Serve 2048 static files before React catch-all
+app.use('/2048', express.static(path.join(__dirname, 'public/2048')));
+// Serve other static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // In-memory high scores (for demo)
@@ -47,6 +51,8 @@ app.post('/api/scores/:game', (req, res) => {
 
 
 // Serve index.html for any non-API route
+
+// React app catch-all (should be last)
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api/')) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
