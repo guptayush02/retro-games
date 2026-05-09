@@ -1,0 +1,19 @@
+{
+  "name": "retro-games-portal",
+  "version": "1.0.0",
+  "description": "Browser gaming portal with multiplayer support",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "games/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces",
+    "start": "npm start --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

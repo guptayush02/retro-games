@@ -1,0 +1,12 @@
+{
+  "name": "game-snake",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "echo 'Snake build'"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.7.0"
+  }
+}

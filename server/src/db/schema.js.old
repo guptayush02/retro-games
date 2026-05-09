@@ -1,0 +1,111 @@
+import pool from '../db.js';
+
+export const initDB = async () => {
+  const client = await pool.connect();
+
+  try {
+    // Users table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        username VARCHAR(100) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        avatar VARCHAR(255),
+        xp INT DEFAULT 0,
+        coins INT DEFAULT 0,
+        role VARCHAR(50) DEFAULT 'player',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Games table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS games (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        genre VARCHAR(100),
+        thumbnail VARCHAR(255),
+        game_type VARCHAR(50),
+        max_players INT DEFAULT 1,
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Player stats table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS player_stats (
+        id SERIAL PRIMARY KEY,
+        user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        game_id INT NOT NULL REFERENCES games(id) ON DELETE CASCADE,
+        wins INT DEFAULT 0,
+        losses INT DEFAULT 0,
+        draws INT DEFAULT 0,
+        highest_score INT DEFAULT 0,
+        total_plays INT DEFAULT 0,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, game_id)
+      )
+    `);
+
+    // Game sessions table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS game_sessions (
+        id SERIAL PRIMARY KEY,
+        game_id INT NOT NULL REFERENCES games(id) ON DELETE CASCADE,
+        room_name VARCHAR(255),
+        host_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        status VARCHAR(50),
+        max_players INT,
+        current_players INT DEFAULT 1,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        ended_at TIMESTAMP
+      )
+    `);
+
+    // Session players table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS session_players (
+        id SERIAL PRIMARY KEY,
+        session_id INT NOT NULL REFERENCES game_sessions(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        score INT DEFAULT 0,
+        position INT,
+        joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Leaderboard table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS leaderboard (
+        id SERIAL PRIMARY KEY,
+        user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        game_id INT,
+        score INT,
+        rank INT,
+        period VARCHAR(50),
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Recently played table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS recently_played (
+        id SERIAL PRIMARY KEY,
+        user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        game_id INT NOT NULL REFERENCES games(id) ON DELETE CASCADE,
+        played_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    console.log('Database initialized successfully');
+  } catch (err) {
+    console.error('Error initializing database:', err);
+    throw err;
+  } finally {
+    client.release();
+  }
+};
