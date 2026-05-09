@@ -15,7 +15,23 @@ function extractFamobiTitles(seedSource) {
   while ((match = regex.exec(seedSource))) {
     titles.push(match[2].replace(/\\'/g, "'"));
   }
-  return [...new Set(titles)];
+  return titles;
+}
+
+function extractOpenSourceTitles(seedSource) {
+  const titles = [];
+  const regex = /openSource\('((?:[^'\\]|\\.)+)',\s*'((?:[^'\\]|\\.)+)'/g;
+  let match;
+  while ((match = regex.exec(seedSource))) {
+    titles.push(match[1].replace(/\\'/g, "'"));
+  }
+  return titles;
+}
+
+function extractAllGameTitles(seedSource) {
+  const famobiTitles = extractFamobiTitles(seedSource);
+  const openSourceTitles = extractOpenSourceTitles(seedSource);
+  return [...new Set([...famobiTitles, ...openSourceTitles])];
 }
 
 async function fetchDuckDuckGoVqd(query) {
@@ -60,7 +76,7 @@ async function searchImage(query) {
 
 async function main() {
   const seedSource = await readFile(seedFilePath, 'utf8');
-  const titles = extractFamobiTitles(seedSource);
+  const titles = extractAllGameTitles(seedSource);
 
   const overrides = {};
   for (const title of titles) {
