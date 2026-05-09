@@ -116,22 +116,19 @@ const seedDatabase = async () => {
 
       // ── Open-source HTML5 Racing Games ──────────────────────────────────
       // Car Racing
-      openSource('Pixel Wheels', 'Top-down retro Micro Machines-style racing game with multiple tracks, vehicles, and split-screen multiplayer support.', 'Racing', 'https://agateau.itch.io/pixelwheels', 'GPL-3.0', 'single-player', 1),
       openSource('PolyTrack', 'High-speed low-poly racing game with track editor, replay system, and mobile support. Inspired by TrackMania.', 'Racing', 'https://kodub.itch.io/polytrack', 'proprietary-free', 'single-player', 1),
       openSource('Carnof', 'Fast-paced 2-player multiplayer arcade racer with split-screen support playable in any modern browser.', 'Racing', 'https://kosmonaut.itch.io/carnof', 'open-source', 'multiplayer', 2),
-      openSource('Xenorace', 'Retro F-Zero style arcade racing with Mode 7 effects, 14 tracks, 8 vehicles, and 2-player split-screen support.', 'Racing', 'https://livingroomstudio.itch.io/xenorace', 'proprietary-free', 'multiplayer', 2),
-      openSource('Infinite Cars', 'Endless 3D racing game with procedurally generated environments built with WebGL and smooth gameplay.', 'Racing', 'https://takaneichinose.itch.io/infinite-cars', 'open-source', 'single-player', 1),
       openSource('Retro Racing', 'Game Boy-style retro racer with obstacle avoidance gameplay. Collect coins while dodging obstacles with increasing difficulty.', 'Racing', 'https://snow140.itch.io/retro-racing', 'open-source', 'single-player', 1),
 
       // Motorcycle/Bike Racing
-      openSource('Moto Racer', 'Lightweight motorcycle racing game inspired by Road Rash. Built with HTML5 Canvas and pure JavaScript. Race through 3 laps with checkpoint-based racing.', 'Racing', 'https://github.com/jgzuo/moto-racer', 'MIT', 'single-player', 1),
+      openSource('Moto Racer', 'Lightweight motorcycle racing game inspired by Road Rash. Built with HTML5 Canvas and pure JavaScript. Race through 3 laps with checkpoint-based racing.', 'Racing', 'https://jgzuo.github.io/moto-racer', 'MIT', 'single-player', 1),
       openSource('Mountain Motorcycle Racing', 'Procedurally generated motorcycle racing game with challenging terrain and progressive difficulty. Perfect for thrill seekers.', 'Racing', 'https://jmirarchi.itch.io/mountain-motorcycle-racing', 'open-source', 'single-player', 1),
 
       // 3D Racing
-      openSource('Rally Racing Game', 'Browser-playable 3D rally racing game using Three.js, Cannon.js, and Blender-created assets. Supports realistic racing mechanics.', 'Racing', 'https://github.com/LiamOsler/gltf-game', 'open-source', 'single-player', 1),
-      openSource('Racing 3D WebGL', '3D car racing simulation built with JavaScript and WebGL. Classic racing game mechanics with impressive 3D graphics rendering.', 'Racing', 'https://github.com/mgrzeszczak/racing-3d', 'open-source', 'single-player', 1),
-      openSource('Racing JS', '3D browser-based racing game with airplane mechanics. Built with HTML5 Canvas and WebGL for immersive racing experience.', 'Racing', 'https://github.com/Antonio-R1/racing-js', 'open-source', 'single-player', 1),
-      openSource('Car Race Game', 'Simple yet engaging car racing game with obstacle avoidance gameplay and scoring system built with HTML5 and JavaScript.', 'Racing', 'https://github.com/KeshavRajuR/Car-Race', 'open-source', 'single-player', 1),
+      openSource('Racing 3D WebGL', '3D car racing simulation built with JavaScript and WebGL. Classic racing game mechanics with impressive 3D graphics rendering.', 'Racing', 'https://mgrzeszczak.github.io/racing-3d', 'open-source', 'single-player', 1),
+      openSource('Racing JS', '3D browser-based racing game with multiple environments and game modes. Built with Three.js and WebGL for immersive racing experience.', 'Racing', 'https://antonio-r1.github.io/racing-js', 'open-source', 'single-player', 1),
+      openSource('Car Race Game', 'Simple yet engaging car racing game with obstacle avoidance gameplay and scoring system built with HTML5 and JavaScript.', 'Racing', 'https://keshavrajur.github.io/Car-Race/Main_menu.html', 'open-source', 'single-player', 1),
+      openSource('Speed Road', 'Fast-paced top-down arcade racing game with multiple levels and difficulty modes. Dodge obstacles and reach the finish line.', 'Racing', 'https://playcanvas.com/play/1299876', 'proprietary-free', 'single-player', 1),
 
 
       // Arcade / Action
