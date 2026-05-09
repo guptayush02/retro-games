@@ -19,6 +19,7 @@ import Navbar from './components/Navbar';
 
 // Module-level flag — survives StrictMode double-mount, prevents duplicate guest creation
 let guestSessionInitializing = false;
+let guestSessionRefreshing = false;
 
 function ProtectedRoute({ children }) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -40,6 +41,7 @@ function App() {
   const clearGuest = useGuestStore((state) => state.clearGuest);
   const setGuestToken = useGuestStore((state) => state.setGuestToken);
   const isGuestSessionValid = useGuestStore((state) => state.isGuestSessionValid);
+  const guestUserId = useGuestStore((state) => state.guestUserId);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -62,46 +64,72 @@ function App() {
       if (guestSessionInitializing) return;
       guestSessionInitializing = true;
 
-      const guestUserId = localStorage.getItem('guestUserId');
-
-      if (guestUserId) {
-        try {
-          const res = await authAPI.refreshGuestSession(guestUserId);
-          setGuestToken(res.data.guestToken, res.data.expiresIn, res.data.user.id);
-          setUser(res.data.user);
-          return;
-        } catch (err) {
-          console.error('Failed to refresh guest session, creating new one:', err);
-          localStorage.removeItem('guestUserId');
-        }
-      }
-
       try {
+        const persistedGuestUserId = localStorage.getItem('guestUserId');
+
+        if (persistedGuestUserId) {
+          try {
+            const res = await authAPI.refreshGuestSession(persistedGuestUserId);
+            setGuestToken(res.data.guestToken, res.data.expiresIn, res.data.user.id);
+            setUser(res.data.user);
+            return;
+          } catch (err) {
+            console.error('Failed to refresh guest session, creating new one:', err);
+            localStorage.removeItem('guestUserId');
+          }
+        }
+
         const res = await authAPI.guestLogin();
         setGuestToken(res.data.guestToken, res.data.expiresIn, res.data.user.id);
         setUser(res.data.user);
       } catch (err) {
         console.error('Failed to auto-create guest session:', err);
-        guestSessionInitializing = false; // allow retry on error
+      } finally {
+        guestSessionInitializing = false;
       }
     };
 
     createGuestIfNeeded();
   }, [token, setGuestToken, setUser]);
 
-  // Check if guest session has expired
+  // Keep same guest ID and extend session before expiry (sliding 30-minute window)
   useEffect(() => {
     if (isGuest) {
       const checkInterval = setInterval(() => {
-        const isValid = useGuestStore.getState().isGuestSessionValid();
-        if (!isValid) {
+        const state = useGuestStore.getState();
+        const expiresAt = Number(state.guestExpires || 0);
+        const remainingMs = expiresAt - Date.now();
+
+        // If token already expired, clear and let init flow recreate only if no guestUserId exists.
+        if (remainingMs <= 0) {
           clearGuest();
+          return;
+        }
+
+        // Refresh with same guest user id when less than 5 minutes remain
+        if (remainingMs <= 5 * 60 * 1000 && !guestSessionRefreshing) {
+          const persistedGuestUserId = state.guestUserId || localStorage.getItem('guestUserId');
+          if (!persistedGuestUserId) return;
+
+          guestSessionRefreshing = true;
+          authAPI
+            .refreshGuestSession(persistedGuestUserId)
+            .then((res) => {
+              setGuestToken(res.data.guestToken, res.data.expiresIn, res.data.user.id);
+              setUser(res.data.user);
+            })
+            .catch((err) => {
+              console.error('Failed to refresh guest session:', err);
+            })
+            .finally(() => {
+              guestSessionRefreshing = false;
+            });
         }
       }, 60000); // Check every minute
 
       return () => clearInterval(checkInterval);
     }
-  }, [isGuest, clearGuest]);
+  }, [isGuest, guestUserId, clearGuest, setGuestToken, setUser]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex">

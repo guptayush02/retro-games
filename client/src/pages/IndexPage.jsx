@@ -42,8 +42,11 @@ function IndexPage() {
 
     setStartingGuest(true);
     try {
-      const res = await authAPI.guestLogin();
-      setGuestToken(res.data.guestToken, res.data.expiresIn);
+      const guestUserId = localStorage.getItem('guestUserId');
+      const res = guestUserId
+        ? await authAPI.refreshGuestSession(guestUserId)
+        : await authAPI.guestLogin();
+      setGuestToken(res.data.guestToken, res.data.expiresIn, res.data.user.id);
       setUser(res.data.user);
       navigate('/games');
     } catch (err) {
