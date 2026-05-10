@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    totalWebsiteTimeMs: {
+      type: Number,
+      default: 0,
+    },
+    lastActivityAt: Date,
   },
   {
     timestamps: true,

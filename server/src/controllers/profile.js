@@ -4,7 +4,7 @@ import PlayerStats from '../models/PlayerStats.js';
 export const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId).select(
-      'id email username avatar xp coins isAnonymous visitCount createdAt'
+      'id email username avatar xp coins isAnonymous visitCount totalWebsiteTimeMs lastActivityAt createdAt'
     );
 
     if (!user) {
@@ -22,6 +22,9 @@ export const getProfile = async (req, res) => {
           wins: s.wins,
           losses: s.losses,
           highestScore: s.highestScore,
+          totalPlays: s.totalPlays,
+          totalPlayTimeMs: s.totalPlayTimeMs || 0,
+          lastPlayedAt: s.lastPlayedAt || s.updatedAt || null,
         })),
     });
   } catch (err) {

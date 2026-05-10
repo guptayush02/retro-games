@@ -9,6 +9,11 @@ function GameCard({ game, navigate }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageSrc, setImageSrc] = useState(resolveGameImage(game));
 
+  useEffect(() => {
+    setImageSrc(resolveGameImage(game));
+    setImageLoaded(false);
+  }, [game]);
+
   const handleImageError = () => {
     if (imageSrc !== DEFAULT_GAME_IMAGE) {
       setImageSrc(DEFAULT_GAME_IMAGE);
@@ -28,7 +33,6 @@ function GameCard({ game, navigate }) {
           }`}
           loading="lazy"
           decoding="async"
-          crossOrigin="anonymous"
           onLoad={() => setImageLoaded(true)}
           onError={handleImageError}
         />

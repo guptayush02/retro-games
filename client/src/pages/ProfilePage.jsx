@@ -36,6 +36,16 @@ function ProfilePage() {
     return `${mins}m ${secs}s`;
   };
 
+  const formatDuration = (ms = 0) => {
+    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+    const hours = Math.floor(totalSeconds / 3600);
+    const mins = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    if (hours > 0) return `${hours}h ${mins}m`;
+    if (mins > 0) return `${mins}m ${secs}s`;
+    return `${secs}s`;
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-12 text-white">
       <h1 className="text-4xl font-bold mb-8">Player Profile</h1>
@@ -85,6 +95,7 @@ function ProfilePage() {
                 <span className="text-yellow-400 font-semibold">⚡ {(profile.xp ?? 0).toLocaleString()} XP</span>
                 <span className="text-green-400 font-semibold">🪙 {(profile.coins ?? 0).toLocaleString()} Coins</span>
                 <span className="text-blue-400 font-semibold">🔁 {profile.visitCount ?? 0} Visit{profile.visitCount !== 1 ? 's' : ''}</span>
+                <span className="text-cyan-400 font-semibold">⏳ {formatDuration(profile.totalWebsiteTimeMs ?? 0)} on site</span>
               </div>
             </div>
           </div>
@@ -101,6 +112,7 @@ function ProfilePage() {
                     <th className="px-6 py-3 text-right">Wins</th>
                     <th className="px-6 py-3 text-right">Losses</th>
                     <th className="px-6 py-3 text-right">High Score</th>
+                    <th className="px-6 py-3 text-right">Time Played</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -111,6 +123,9 @@ function ProfilePage() {
                       <td className="px-6 py-4 text-right text-red-400">{s.losses}</td>
                       <td className="px-6 py-4 text-right text-yellow-400 font-semibold">
                         {(s.highestScore ?? 0).toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 text-right text-cyan-300 font-semibold">
+                        {formatDuration(s.totalPlayTimeMs || 0)}
                       </td>
                     </tr>
                   ))}

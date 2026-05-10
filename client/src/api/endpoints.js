@@ -52,6 +52,11 @@ export const gamesAPI = {
     api.get('/api/games/recently-played'),
 };
 
+export const activityAPI = {
+  track: (data) =>
+    api.post('/api/activity/track', data),
+};
+
 export const profileAPI = {
   getProfile: (userId) =>
     api.get(`/api/profile/${userId}`),
@@ -63,6 +68,11 @@ export const profileAPI = {
     api.post('/api/profile/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
+};
+
+export const adminAPI = {
+  getAnalytics: (params = {}) =>
+    api.get('/api/admin/analytics', { params }),
 };
 
 export const leaderboardAPI = {

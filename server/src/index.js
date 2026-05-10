@@ -8,6 +8,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from './db.js';
 import authRoutes from './routes/authRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import activityRoutes from './routes/activityRoutes.js';
 import gameRoutes from './routes/gameRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
@@ -32,6 +34,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/activity', activityRoutes);
 app.use('/api/games', gameRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);

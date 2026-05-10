@@ -82,6 +82,13 @@ function LoginPage() {
             Sign up
           </a>
         </p>
+
+        <p className="text-center mt-3 text-gray-500 text-sm">
+          Admin?{' '}
+          <a href="/admin/login" className="text-orange-400 hover:underline">
+            Admin Login
+          </a>
+        </p>
       </div>
     </div>
   );

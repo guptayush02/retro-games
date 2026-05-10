@@ -6,9 +6,13 @@ import User from '../models/User.js';
 const GUEST_DURATION = () => parseInt(process.env.GUEST_SESSION_DURATION || 1800000);
 
 export const signup = async (req, res) => {
-  const { email, password, username, guestUserId } = req.body;
+  const { email, password, username, guestUserId, role } = req.body;
 
   try {
+    if (role === 'admin') {
+      return res.status(403).json({ message: 'Admin signup is disabled. Use admin login only.' });
+    }
+
     // Check if email or username already taken by a DIFFERENT user
     const userExists = await User.findOne({
       $or: [{ email }, { username }],
@@ -30,6 +34,7 @@ export const signup = async (req, res) => {
           email,
           username,
           passwordHash,
+          role: 'player',
           isAnonymous: false,
           anonymousSessionToken: null,
           anonymousSessionExpires: null,
@@ -40,7 +45,13 @@ export const signup = async (req, res) => {
 
     if (!user) {
       // No guest to upgrade — create fresh user
-      user = await User.create({ email, username, passwordHash, isAnonymous: false });
+      user = await User.create({
+        email,
+        username,
+        passwordHash,
+        role: 'player',
+        isAnonymous: false,
+      });
     }
 
     const token = jwt.sign(

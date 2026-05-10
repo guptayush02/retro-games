@@ -32,6 +32,11 @@ const playerStatsSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    totalPlayTimeMs: {
+      type: Number,
+      default: 0,
+    },
+    lastPlayedAt: Date,
   },
   {
     timestamps: true,
