@@ -3,9 +3,9 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import './config/env.js';
 import connectDB from './db.js';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
@@ -15,8 +15,8 @@ import profileRoutes from './routes/profileRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const envPath = path.resolve(__dirname, '../../.env');
-dotenv.config({ path: envPath });
+const publicDir = path.resolve(__dirname, '../public');
+const indexHtmlPath = path.join(publicDir, 'index.html');
 
 const app = express();
 const httpServer = createServer(app);
@@ -28,7 +28,24 @@ const io = new Server(httpServer, {
 });
 
 // Middleware
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        'img-src': ["'self'", 'data:', 'blob:', 'https:', 'http:'],
+        'frame-src': [
+          "'self'",
+          'https://play.famobi.com',
+          'https://www.crazygames.com',
+          'https://skribbl.io',
+        ],
+        'connect-src': ["'self'", 'https:', 'http:', 'ws:', 'wss:'],
+      },
+    },
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
 app.use(cors());
 app.use(express.json());
 
@@ -40,9 +57,20 @@ app.use('/api/games', gameRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 
+// Serve frontend build from Express public folder
+app.use(express.static(publicDir));
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+
+// SPA fallback (except API/health/socket.io)
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/socket.io') || req.path === '/health') {
+    return next();
+  }
+  return res.sendFile(indexHtmlPath);
 });
 
 // Socket.IO connection

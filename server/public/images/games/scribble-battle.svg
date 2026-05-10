@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Scribble Battle">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <text x="60" y="90" fill="#e5e7eb" font-family="Arial, sans-serif" font-size="56" font-weight="700">Scribble Battle</text>
+  <g transform="translate(220,140)">
+    <rect width="760" height="420" rx="24" fill="#f8fafc" stroke="#94a3b8" stroke-width="6"/>
+    <path d="M70 300 C120 250, 160 360, 210 300 S300 250, 340 320 S430 380, 490 290 S600 200, 690 340" fill="none" stroke="#7c3aed" stroke-width="16" stroke-linecap="round"/>
+    <path d="M90 170 C160 120, 200 250, 260 190 S370 110, 430 210 S540 260, 610 180 S690 90, 740 200" fill="none" stroke="#ef4444" stroke-width="14" stroke-linecap="round" stroke-dasharray="14 10"/>
+    <circle cx="680" cy="110" r="18" fill="#22c55e"/>
+    <circle cx="735" cy="145" r="14" fill="#f59e0b"/>
+    <rect x="40" y="40" width="190" height="44" rx="12" fill="#e0e7ff"/>
+    <text x="55" y="70" fill="#1e293b" font-family="Arial, sans-serif" font-size="26" font-weight="700">Draw & Battle</text>
+  </g>
+  <text x="60" y="640" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="30">Free draw, shared live, score by strokes.</text>
+</svg>

@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
+    "build": "npm run build:client && npm run sync:public",
+    "build:client": "npm --prefix ../client run build",
+    "sync:public": "node scripts/syncClientBuild.js",
     "seed": "node src/seeds/seedDb.js",
     "seed:images": "node scripts/updateGameImages.js"
   },

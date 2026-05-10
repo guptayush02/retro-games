@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, useLocation, useMatch } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuthStore } from './store/authStore';
 import { useGuestStore } from './store/guestStore';
 import { activityAPI, authAPI } from './api/endpoints';
@@ -123,6 +123,7 @@ function AdminRoute({ children }) {
 }
 
 function App() {
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const setUser = useAuthStore((state) => state.setUser);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const token = useAuthStore((state) => state.token);
@@ -214,8 +215,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex">
-      <Navbar />
-      <main className="flex-1 ml-64 transition-all duration-300 md:ml-20 lg:ml-64">
+      <Navbar
+        isExpanded={isSidebarExpanded}
+        onToggleExpand={() => setIsSidebarExpanded((prev) => !prev)}
+      />
+      <main className={`flex-1 transition-all duration-300 ${isSidebarExpanded ? 'ml-64' : 'ml-20'}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />

@@ -3,7 +3,7 @@ import { useAuthStore } from '../store/authStore';
 import { useGuestStore } from '../store/guestStore';
 import { useEffect, useState } from 'react';
 
-function Navbar() {
+function Navbar({ isExpanded, onToggleExpand }) {
   const user = useAuthStore((state) => state.user);
   const token = useAuthStore((state) => state.token);
   const logout = useAuthStore((state) => state.logout);
@@ -12,7 +12,6 @@ function Navbar() {
   const guestExpires = useGuestStore((state) => state.guestExpires);
   const guestUserId = useGuestStore((state) => state.guestUserId);
   const [timeLeft, setTimeLeft] = useState('');
-  const [isExpanded, setIsExpanded] = useState(true);
 
   // Live countdown ticker
   useEffect(() => {
@@ -70,7 +69,7 @@ function Navbar() {
             </Link>
           )}
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={onToggleExpand}
             className="p-2 hover:bg-gray-700 rounded transition-colors ml-auto"
             title={isExpanded ? 'Collapse menu' : 'Expand menu'}
           >

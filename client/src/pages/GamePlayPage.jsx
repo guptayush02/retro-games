@@ -34,9 +34,10 @@ function useRandomOnlineMatch({ gameKey, user, onMatchFound, onMove, onOpponentL
   const onMoveRef = useRef(onMove);
   const onOpponentLeftRef = useRef(onOpponentLeft);
 
+  const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5001';
   const wsUrl = import.meta.env.VITE_WS_URL
     ? import.meta.env.VITE_WS_URL.replace(/^ws/, 'http')
-    : (import.meta.env.VITE_API_URL || 'http://localhost:5001');
+    : (import.meta.env.VITE_API_URL || currentOrigin);
 
   useEffect(() => {
     onMatchFoundRef.current = onMatchFound;

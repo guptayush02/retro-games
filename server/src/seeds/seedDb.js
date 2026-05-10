@@ -3,6 +3,7 @@ import Game from '../models/Game.js';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import { readFileSync } from 'node:fs';
+import '../config/env.js';
 
 // ─── Famobi / html5games.com helpers ────────────────────────────────────────
 const toPascalCase = (slug) =>
@@ -47,9 +48,12 @@ const seedDatabase = async () => {
     console.log('Seeding database with sample games...');
     await connectDB();
 
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@retrogames.com';
-    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@12345';
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminUsername = process.env.ADMIN_USERNAME;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (!adminEmail || !adminUsername || !adminPassword) {
+      throw new Error('ADMIN_EMAIL, ADMIN_USERNAME and ADMIN_PASSWORD are required in .env for seeding');
+    }
     const adminPasswordHash = await bcrypt.hash(adminPassword, 10);
 
     const existingAdmin =
